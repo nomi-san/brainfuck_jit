@@ -66,7 +66,7 @@ public:
         // Main stack                               // char stack[MAX_STACK]
         x86::Mem stack = cc.newStack(MAX_STACK, sizeof(void *));
         // Stack pointer
-        x86::Gp sp = cc.newGpw();                   // word sp
+        x86::Gp sp = cc.newGpz();                   // size_t sp
         // Temp (u8)
         x86::Gp tmp = cc.newGpb();                  // char tmp
 
