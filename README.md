@@ -11,11 +11,11 @@ $ git clone https://github.com/nomi-san/brainfuck_jit.git
 - Build
 ```
 $ cd brainfuck_jit
-$ git submodule update
+$ git submodule update --init --recursive
 $ xmake
 ```
 
 - Test
 ```
-$ ./brainfuck_jit [file]
+$ ./brainfuck_jit hello.bf
 ```
