@@ -37,6 +37,15 @@ bin/
 pro/
 *.sln
 
+# MSVC cl compiler
+*.meta
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+
 # xmake
 build/
 .xmake/
