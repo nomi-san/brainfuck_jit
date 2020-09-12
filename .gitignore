@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# Visual Studio
+.vs/
+bin/
+pro/
+*.sln
+
+# xmake
+build/
+.xmake/
