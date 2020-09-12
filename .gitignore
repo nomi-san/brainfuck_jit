@@ -38,6 +38,7 @@ pro/
 *.sln
 
 # MSVC cl compiler
+*.exp
 *.meta
 *.iobj
 *.pch
