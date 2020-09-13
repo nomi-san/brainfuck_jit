@@ -88,19 +88,30 @@ public:
         // Clear sp by xor
         cc.xor_(sp, sp);                            // sp = 0
 
+        // Optimize for multiple + - > <
+        int n;
+
         while (*prog) {
             switch (*prog++) {
                 case '>':
-                    cc.inc(sp);                     // sp++
+                    //cc.inc(sp);                     // sp++
+                    for(n = 1; *prog == '>'; n++, prog++);
+                    cc.add(sp, n);                  // sp += [n]
                     break;
                 case '<':
-                    cc.dec(sp);                     // sp--
+                    //cc.dec(sp);                     // sp--
+                    for(n = 1; *prog == '<'; n++, prog++);
+                    cc.sub(sp, n);                  // sp -= [n]
                     break;
                 case '+':
-                    cc.inc(idx);                    // stack[sp]++
+                    //cc.inc(idx);                    // stack[sp]++
+                    for(n = 1; *prog == '+'; n++, prog++);
+                    cc.add(idx, n);                 // stack[sp] += [n]
                     break;
                 case '-':
-                    cc.dec(idx);                    // stack[sp]--
+                    //cc.dec(idx);                    // stack[sp]--
+                    for(n = 1; *prog == '-'; n++, prog++);
+                    cc.sub(idx, n);                 // stack[sp] -= [n]
                     break;
                 case '.':
                     cc.mov(tmp, idx);               // tmp = stack[sp]
