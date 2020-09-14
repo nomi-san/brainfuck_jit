@@ -1,4 +1,7 @@
-My Brainf*ck compiler using [Asmjit](https://github.com/asmjit/asmjit).
+<p>
+  <h2 align="center">My fast Brainfuck JIT compiler</h2>
+  <h4 align="center">for x86 and x86-64, using <a href="https://github.com/asmjit/asmjit/">Asmjit</a></h4>
+</p>
 
 ### Getting started
 
