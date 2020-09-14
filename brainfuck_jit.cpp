@@ -35,6 +35,24 @@ private:
             end(cc.newLabel()) {}
     };
 
+    static int consumeOps(const char * &prog) {
+        int n = 1;
+        char op = *prog;
+        while (*prog++) {
+            switch (*prog) {
+                case '.': case ',':
+                case '[': case ']':
+                    return n;
+                case '+': case '-':
+                case '>': case '<':
+                    if (op != *prog) return n;
+                    n++;
+                    break;
+            }
+        }
+        return n;
+    }
+
 public:
     Brainfuck(const char *name, const char *prog)
         : name(name), prog(prog) {}
@@ -88,31 +106,33 @@ public:
         // Clear sp by xor
         cc.xor_(sp, sp);                            // sp = 0
 
-        // Optimize for multiple + - > <
+        // Optimize for same + - > <
         int n;
 
         while (*prog) {
-            switch (*prog++) {
+            switch (*prog) {
                 case '>':
                     //cc.inc(sp);                     // sp++
-                    for(n = 1; *prog == '>'; n++, prog++);
-                    cc.add(sp, n);                  // sp += [n]
-                    break;
+                    // Same '>', eg: ">> >>> some comment >>"
+                    //   so n = 7, then we got "sp += 7"
+                    n = consumeOps(prog);
+                    cc.add(sp, n);                  // sp += [n]                  
+                    continue;
                 case '<':
                     //cc.dec(sp);                     // sp--
-                    for(n = 1; *prog == '<'; n++, prog++);
+                    n = consumeOps(prog);
                     cc.sub(sp, n);                  // sp -= [n]
-                    break;
+                    continue;
                 case '+':
                     //cc.inc(idx);                    // stack[sp]++
-                    for(n = 1; *prog == '+'; n++, prog++);
+                    n = consumeOps(prog);
                     cc.add(idx, n);                 // stack[sp] += [n]
-                    break;
+                    continue;
                 case '-':
                     //cc.dec(idx);                    // stack[sp]--
-                    for(n = 1; *prog == '-'; n++, prog++);
+                    n = consumeOps(prog);
                     cc.sub(idx, n);                 // stack[sp] -= [n]
-                    break;
+                    continue;
                 case '.':
                     cc.mov(tmp, idx);               // tmp = stack[sp]
                     cc.invoke(&invk, imm(&putchar),
@@ -152,6 +172,7 @@ public:
                     loops.pop_back();
                     break;
             }
+            ++prog;
         }
 
         cc.endFunc();
